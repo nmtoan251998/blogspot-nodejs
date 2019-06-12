@@ -23,4 +23,4 @@ server.use(cookieParser());
 // routes
 server.use(router);
 
-server.listen(PORT, () => console.log(`Server is listening in localhost:${PORT}`));
+server.listen(PORT, () => console.log(`Server is listening in 127.0.0.1:${PORT}`));

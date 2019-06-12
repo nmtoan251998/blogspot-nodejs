@@ -11,7 +11,7 @@ router.get('', (req, res) => {
         return res.render('pages/user', { title, cookie: true, payload })
     }
     
-    res.render('pages/user', { title, cookie: false });
+    res.render('pages/user', { cookie: false });
 })
 
 module.exports = router;
