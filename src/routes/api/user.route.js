@@ -1,5 +1,7 @@
 const router = require('express').Router();
 
+const User = require('../../models/users');
+
 // route    GET /users
 // desc     get the users index view
 // access   public
@@ -11,7 +13,7 @@ router.get('', (req, res) => {
         return res.render('pages/user', { title, cookie: true, payload })
     }
     
-    res.render('pages/user', { cookie: false });
+    res.render('pages/user', { title, cookie: false });
 })
 
 module.exports = router;

@@ -87,8 +87,8 @@ router.post('/login', (req, res) => {
                 }
 
                 const payload = {
-                    accountname: accountname,
-                    email: 'cloneemail@email.com'
+                    _id: user._id,                    
+                    accountname: accountname
                 }
 
                 if(result === true) {

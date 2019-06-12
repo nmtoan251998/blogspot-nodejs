@@ -12,7 +12,7 @@ server.set('view engine', 'ejs');
 server.set('views', __dirname + '/views');
 
 // static files
-server.use(require('express').static(__dirname + 'public'));
+server.use(require('express').static(__dirname + '/public'));
 
 // middlewares
 server.use(bodyParser.json());

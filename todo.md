@@ -1,0 +1,2 @@
+## Middleware
+- Create cookieChecker middleware
