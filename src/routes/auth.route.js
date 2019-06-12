@@ -46,7 +46,7 @@ router.post('/register', (req, res) => {
                     .then(user => console.log('New user: ' +user +' action = redirect'))
                     .catch(err => res.status(400).json({ error: err }));
                     
-                return res.redirect('/auth/register');
+                return res.redirect('/auth/login');
             })
             .catch(err => console.log(err));
     });

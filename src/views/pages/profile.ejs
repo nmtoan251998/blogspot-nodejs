@@ -11,7 +11,7 @@
 <body>
     <%-include('../layouts/header.ejs')%>
     <div class="container-fluid">
-        <form action="/users/profile" method="POST" class="form-group w-75 mx-auto p-2 bg-light rounded clearfix">
+        <form action="/profile" method="POST" class="form-group w-75 mx-auto p-2 bg-light rounded clearfix">
             <label for="accountname">Account name:</label>
             <input id="accountname" class="form-control" type="text" name="accountname" disabled value=<%=payload.accountname%>>
             <input type="text" name="_id" hidden value=<%=payload._id%>>

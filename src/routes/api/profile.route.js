@@ -1,5 +1,7 @@
 const router = require('express').Router();
 
+const User = require('../../models/users');
+
 // route    GET /users/profile
 // desc     get the users profile view
 // access   private

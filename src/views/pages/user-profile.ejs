@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/userprofile.css" >
+    <title>User Profile</title>
+</head>
+<body>
+    <%-include('../layouts/header.ejs')%>    
+    <div class="container-fluid w-50 mt-5 bg-light">        
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        <img src="/img/coders-tokyo-logo.svg" alt="" class="avatar-img" style="width: 120px; height: 120px; border-radius: 50%;">
+                    </th>
+                    <td>
+                        <h3><%=user.firstname%> <%=user.lastname%></h3>
+                        <p>Job position at Job location</p>
+                    </td>                    
+                </tr>
+                <tr>
+                    <th>
+                        User information: 
+                        <hr/>
+                    </th>                    
+                </tr>                                         
+                <tr>
+                    <th>Account Id</th>
+                    <td>
+                        <input type="text" class="form-control" placeholder="<%=user.accountname%>" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Joined</th>
+                    <td>
+                        <input type="text" class="form-control" placeholder="<%=user.createDate%>" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th>First name</th>
+                    <td>
+                        <input type="text" class="form-control" placeholder="<%=user.firstname%>" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Last name</th>
+                    <td>
+                        <input type="text" class="form-control" placeholder="<%=user.lastname%>" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>
+                        <input type="text" class="form-control" placeholder="<%=user.email%>" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>
+                        <input type="text" class="form-control" placeholder="<%=user.address%>" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Age</th>
+                    <td>
+                        <input type="text" class="form-control" placeholder="<%= user.age%>" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td>
+                        <input type="text" class="form-control" placeholder="<%=user.phone%>" disabled>
+                    </td>
+                </tr>    
+                <tr>
+                    <th></th>
+                    <td>               
+                        <div class="float-right">
+                            <a href="" class="btn btn-warning mt-1">Edit profile</a>
+                            <a href="" class="btn btn-dark mt-1">Change password</a>
+                        </div>                                 
+                    </td>                    
+                </tr>            
+            </tbody>
+        </table>                
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
