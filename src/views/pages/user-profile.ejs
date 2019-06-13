@@ -18,7 +18,7 @@
                         <img src="/img/coders-tokyo-logo.svg" alt="" class="avatar-img" style="width: 120px; height: 120px; border-radius: 50%;">
                     </th>
                     <td>
-                        <h3><%=user.firstname%> <%=user.lastname%></h3>
+                        <h3><%=profile.firstname%> <%=profile.lastname%></h3>
                         <p>Job position at Job location</p>
                     </td>                    
                 </tr>
@@ -43,44 +43,44 @@
                 <tr>
                     <th>First name</th>
                     <td>
-                        <input type="text" class="form-control" placeholder="<%=user.firstname%>" disabled>
+                        <input type="text" class="form-control" placeholder="<%=profile.firstname%>" disabled>
                     </td>
                 </tr>
                 <tr>
                     <th>Last name</th>
                     <td>
-                        <input type="text" class="form-control" placeholder="<%=user.lastname%>" disabled>
+                        <input type="text" class="form-control" placeholder="<%=profile.lastname%>" disabled>
                     </td>
                 </tr>
                 <tr>
                     <th>Email</th>
                     <td>
-                        <input type="text" class="form-control" placeholder="<%=user.email%>" disabled>
+                        <input type="text" class="form-control" placeholder="<%=profile.email%>" disabled>
                     </td>
                 </tr>
                 <tr>
                     <th>Address</th>
                     <td>
-                        <input type="text" class="form-control" placeholder="<%=user.address%>" disabled>
+                        <input type="text" class="form-control" placeholder="<%=profile.address%>" disabled>
                     </td>
                 </tr>
                 <tr>
                     <th>Age</th>
                     <td>
-                        <input type="text" class="form-control" placeholder="<%= user.age%>" disabled>
+                        <input type="text" class="form-control" placeholder="<%= profile.age%>" disabled>
                     </td>
                 </tr>
                 <tr>
                     <th>Phone</th>
                     <td>
-                        <input type="text" class="form-control" placeholder="<%=user.phone%>" disabled>
+                        <input type="text" class="form-control" placeholder="<%=profile.phone%>" disabled>
                     </td>
                 </tr>    
                 <tr>
                     <th></th>
                     <td>               
                         <div class="float-right">
-                            <a href="" class="btn btn-warning mt-1">Edit profile</a>
+                            <a href="/profile" class="btn btn-warning mt-1">Edit profile</a>
                             <a href="" class="btn btn-dark mt-1">Change password</a>
                         </div>                                 
                     </td>                    

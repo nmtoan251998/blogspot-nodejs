@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const User = require('../../models/users');
+const Profile = require('../../models/profile');
 
 // route    GET /users
 // desc     get the users index view
@@ -24,11 +25,16 @@ router.get('/profile', (req, res) => {
     if(!req.cookies.payload) {
         return res.render('pages/user', { cookie: false })
     }
-
+    
     User.findOne({accountname: payload.accountname})
         .then(user => {
-            console.log(user);
-            res.render('pages/user-profile', { cookie: true, payload, user });
+            Profile.findOne({ handle: payload.accountname })
+                .then(profile => {
+                    console.log(profile)
+                    console.log(payload.accountname)
+                    res.render('pages/user-profile', { cookie: true, payload, user, profile });
+                })
+                .catch(err => console.log(err));
         })        
 })
 

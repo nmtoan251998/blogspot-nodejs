@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/css/userprofile.css" >
+    <link rel="stylesheet" type="text/css" href="/css/profile.css" >
     <title>Edit <%=payload.accountname%> profile</title>
 </head>
 <body>
     <%-include('../layouts/header.ejs')%>
-    <div class="container-fluid">
+    <div class="container-fluid mt-2">
         <form action="/profile" method="POST" class="form-group w-75 mx-auto p-2 bg-light rounded clearfix">
             <label for="accountname">Account name:</label>
             <input id="accountname" class="form-control" type="text" name="accountname" disabled value=<%=payload.accountname%>>
-            <input type="text" name="_id" hidden value=<%=payload._id%>>
+            <input type="text" name="_id" hidden value="<%=payload._id%>">
+            <input type="text" name="accountname" hidden value="<%=payload.accountname%>">
 
             <div>
                 <span class="u-inline-block mr-2">
@@ -45,8 +46,9 @@
             <input id="address" class="form-control" type="text" name="address">
 
             <div class="profile-bonus mt-4">
-                <a href="/users/profile/edu-mangement" class="btn btn-info">Add education</a>
-                <a href="/users/profile/exp-mangement" class="btn btn-info">Add experience</a>
+                <a href="/management/edu" class="btn btn-info">Add education</a>
+                <a href="/management/exp" class="btn btn-info">Add experience</a>
+                <a href="/management/skill" class="btn btn-info">Add skill</a>
                 <button class="btn btn-primary float-right">Save</button>
             </div>
             

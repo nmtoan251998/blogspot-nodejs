@@ -76,7 +76,7 @@ router.post('/login', (req, res) => {
         .then(user => {
             if(!user) {
                 // TODO: render error label
-                return res.status(404).json({ msg: 'Wrong Id or password' });
+                return res.redirect('/auth/login');
             }
 
             // compare the password of matched account infor in the database
