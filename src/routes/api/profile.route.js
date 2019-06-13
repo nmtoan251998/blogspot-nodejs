@@ -15,36 +15,30 @@ router.get('', (req, res) => {
 // route    POST /users/profile
 // desc     create user profile
 // access   private
-router.post('', (req, res) => {        
-    User.findOne({_id: req.body._id.toString().trim()})     
+router.post('', (req, res) => {
+    User.findOne({_id: req.body._id.trim()})     
         .populate('user')        
-        .then(user => {            
-            const newProfile = new Profile({
-                handle: req.body.accountname.toString().trim(),
-                firstname: req.body.firstname.toString().trim(),
-                lastname: req.body.lastname.toString().trim(),
-                email: req.body.email.toString().trim(),
-                age: parseInt(req.body.age.toString().trim()),
-                phone: req.body.phone.toString().trim(),
-                address: req.body.address.toString().trim(),
-            });                                     
-        
-            Profile.findOneAndUpdate({ handle: newProfile.handle })            
-                .then(profile => {                                        
-                    if(profile) {
-                        newProfile.save();                           
-                        return res.redirect('/users/profile');
-                    }
-                })                
-                
-            newProfile
-                .save()
-                .then(newprofile => console.log(newprofile))
+        .then(user => {
+            Profile.findOne({handle: req.body.handle.trim()})
+                .then(profile => {
+                    profile.firstname = req.body.firstname.trim();
+                    profile.lastname = req.body.lastname.trim();
+                    profile.email = req.body.email.trim();
+                    profile.age = parseInt(req.body.age.trim());
+                    profile.phone = req.body.phone.trim();
+                    profile.address = req.body.address.trim();
+    
+                    profile
+                        .save()
+                        .then(newprofile => {                            
+                            res.redirect('/users/profile');
+                        })
+                        .catch(err => console.log('Error updating data'));
+                    
+                })
                 .catch(err => console.log(err));
-
-            res.redirect('/users/profile');
         })
-        .catch(err => res.status(400).send('Error occured'));
+        .catch(err => console.log(err));
 })
 
 module.exports = router;

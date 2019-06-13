@@ -29,9 +29,7 @@ router.get('/profile', (req, res) => {
     User.findOne({accountname: payload.accountname})
         .then(user => {
             Profile.findOne({ handle: payload.accountname })
-                .then(profile => {
-                    console.log(profile)
-                    console.log(payload.accountname)
+                .then(profile => {                    
                     res.render('pages/user-profile', { cookie: true, payload, user, profile });
                 })
                 .catch(err => console.log(err));
