@@ -38,7 +38,27 @@ const profileSchema = mongoose.Schema({
         linkedin: {
             type: String
         },
-    }
+    },
+    edu: [{
+        major: {
+            type: String,
+            require: true
+        },
+        school: {
+            type: String,
+            require: true
+        },
+        rewards: {
+            type: String
+        },
+        from: {
+            type: String
+        },
+        to: {
+            type: String            
+        }
+    }        
+    ],
 });
 
 module.exports = mongoose.model('profile', profileSchema);

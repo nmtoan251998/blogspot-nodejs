@@ -1,4 +1,14 @@
-.u-inline-block {
+.u-inline-block-2 {
     display: inline-block;
     width: 49%;
+}
+
+.u-inline-block-3 {    
+    width: 32%;
+    height: 40px;    
+}
+
+.social-input {
+    height: 40px;       
+    margin-left: 15px;
 }

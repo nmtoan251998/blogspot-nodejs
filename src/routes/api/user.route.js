@@ -16,20 +16,24 @@ router.get('', (req, res) => {
     res.render('pages/user', { cookie: true, payload });
 })
 
-// route    GET /users
-// desc     get the users index view
+// route    GET /users/profile
+// desc     get the users profile view
 // access   private
 router.get('/profile', (req, res) => {    
     const payload = req.cookies.payload || null;
     
     if(!req.cookies.payload) {
-        return res.render('pages/user', { cookie: false })
-    }
+        return res.redirect('/auth/login');
+    }    
     
     User.findOne({accountname: payload.accountname})
         .then(user => {
-            Profile.findOne({ handle: payload.accountname })
+            Profile.findOne({ handle: payload.accountname })                
                 .then(profile => {                    
+                    if(!profile) {
+                        return res.render('pages/user-profile', { cookie: true, payload, user, profile: false });
+                    }
+
                     res.render('pages/user-profile', { cookie: true, payload, user, profile });
                 })
                 .catch(err => console.log(err));
