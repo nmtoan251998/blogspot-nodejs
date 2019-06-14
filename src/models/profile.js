@@ -39,6 +39,10 @@ const profileSchema = mongoose.Schema({
             type: String
         },
     },
+    avatar: {
+        type: String,
+        default: '/img/coders-tokyo-logo.svg',
+    },
     edu: [{
         major: {
             type: String,
