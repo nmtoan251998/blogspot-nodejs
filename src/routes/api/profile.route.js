@@ -111,4 +111,62 @@ router.post('/management/edu', (req, res) => {
         })
 })
 
+// route    GET /profile/mangement/:userid/edu/:id
+// desc     get the users education profile view to modify
+// access   private
+router.get('/management/:userid/edu/:id', (req, res) => {
+    const payload = req.cookies.payload || null;    
+
+    const { userid, id } = req.params;
+        
+    User.findById(userid)
+        .then(user => {
+            Profile.findOne({handle: user.accountname})    
+                .then(profile => {                    
+                    const matchedEdu = Array.from(profile.edu.filter(edu => {                        
+                        return edu._id.toString() === id;                        
+                    })).shift()
+
+                    res.render('pages/profile-edu.modify.ejs', { payload, cookie: true, edu: matchedEdu, userid });
+                })
+        })            
+})
+
+// route    PUT /profile/mangement/:userid/edu/:id
+// desc     modify education profile
+// access   private
+router.post('/management/:userid/edu/:id', (req, res) => {
+    const payload = req.cookies.payload || null;    
+
+    const { userid, id } = req.params;  
+    console.log(req.query['req-method']);  
+        
+    User.findById(userid)
+        .then(user => {
+            Profile.findOne({handle: user.accountname})    
+                .then(profile => {                                        
+                    profile.edu.forEach((edu, index) => {                
+                        if(id === edu._id.toString()) {
+                            if(req.query['req-method'] === 'delete') {
+                                profile.edu.splice(index, 1);
+                            } else if(req.query['req-method'] === 'modify') {                                                                
+                                profile.edu[index].major = req.body.major.toString().trim();
+                                profile.edu[index].school = req.body.school.toString().trim();
+                                profile.edu[index].from = req.body.from.toString().trim();
+                                profile.edu[index].to = req.body.to.toString().trim();
+                                profile.edu[index].rewards = req.body.rewards.toString().trim();                                
+                            }
+                        }                                                    
+                    })
+                    profile
+                        .save()                    
+                        .then(newprofile => {
+                            res.redirect('/users/profile');
+                        })
+                        .catch(err => console.log('Error action data profile'));
+                    
+                })
+        })            
+})
+
 module.exports = router;

@@ -24,7 +24,11 @@
                                 <a href="/profile/management/edu" class="btn btn-info">Add education</a>
                             </td>
                         </tr>                                            
-                    <% }                    
+                    <% }
+                    const eduYears = Array.from(profile.edu.map(edu => parseInt(edu.to.slice(0, 4))));                
+                    const latestEduProfile = eduYears.sort((a, b) => b-a).shift();    
+                    const yearIndex = profile.edu.find(edu => parseInt(edu.to.slice(0, 4)) === latestEduProfile);
+                    console.log(yearIndex);
                     profile.edu.forEach(edu => { %>
                         <tr>                                                
                             <td colspan="2">                                
@@ -34,13 +38,10 @@
                                         Action
                                     </button>
                                     <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton">
-                                        <a href="/profile/management/edu" class="btn btn-info w-100">New</a>                                
-                                        <form action="" method="PUT" class="w-100 py-1">
-                                            <input type="text" name="edu-id" hidden value="">
-                                            <button class="btn btn-warning w-100">Edit</button>
-                                        </form>                              
-                                        <form action="" method="DELETE" class="w-100">
-                                            <input type="text" name="edu-id" hidden value="">
+                                        <a href="/profile/management/edu" class="btn btn-info w-100">New</a>                                        
+                                        <a href="/profile/management/<%=user._id%>/edu/<%=edu._id%>" class="btn btn-warning w-100">Edit</a>                                                                                
+                                        <form action="/profile/management/<%=user._id%>/edu/<%=edu._id%>?req-method=delete" method="POST" class="w-100">
+                                            <input type="text" name="id" hidden value="<%=edu._id%>">
                                             <button class="btn btn-danger w-100">Delete</button>
                                         </form>                            
                                     </div>

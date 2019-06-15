@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 
 require('./config/mongo'); // mongo configuration
 const router = require('./routes/index');
+const allowHttpRequests = require('./middlewares/http-request');
 
 const PORT = process.env.PORT || 3000;
 
@@ -19,6 +20,9 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
 server.use(cookieParser());
+
+// header middleware allow html request
+server.use(allowHttpRequests);
 
 // routes
 server.use(router);

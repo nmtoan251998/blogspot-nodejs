@@ -32,8 +32,7 @@ router.get('/profile', (req, res) => {
                 .then(profile => {                    
                     if(!profile) {
                         return res.render('pages/user-profile', { cookie: true, payload, user, profile: false });
-                    }
-
+                    }                    
                     res.render('pages/user-profile', { cookie: true, payload, user, profile });
                 })
                 .catch(err => console.log(err));
