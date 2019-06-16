@@ -33,7 +33,7 @@ router.get('/profile', (req, res) => {
                     if(!profile) {
                         return res.render('pages/user-profile', { cookie: true, payload, user, profile: false });
                     }
-                    res.render('pages/user-profile', { cookie: true, payload, user, profile });
+                    res.render('pages/user-profile.index.ejs', { cookie: true, payload, user, profile });
                 })
                 .catch(err => console.log(err));
         })        

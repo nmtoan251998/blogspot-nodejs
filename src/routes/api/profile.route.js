@@ -9,7 +9,7 @@ const Profile = require('../../models/profile');
 router.get('', (req, res) => {
     const payload = req.cookies.payload || null;     
     
-    res.render('pages/profile', { payload, cookie: true });
+    res.render('pages/profile.create.ejs', { payload, cookie: true });
 })
 
 // route    POST /users/profile
@@ -77,7 +77,7 @@ router.post('', (req, res) => {
 router.get('/management/edu', (req, res) => {
     const payload = req.cookies.payload || null;
     
-    res.render('pages/profile-edu', { payload, cookie: true });
+    res.render('pages/profile-management-edu.create.ejs', { payload, cookie: true });
 })
 
 // route    POST /profile/mangement/edu
@@ -128,7 +128,7 @@ router.get('/management/:userid/edu/:id', (req, res) => {
                         return edu._id.toString() === id;                        
                     })).shift()
 
-                    res.render('pages/profile-edu.modify.ejs', { payload, cookie: true, edu: matchedEdu, userid });
+                    res.render('pages/profile-management-edu.modify.ejs', { payload, cookie: true, edu: matchedEdu, userid });
                 })
         })            
 })
