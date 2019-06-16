@@ -13,8 +13,8 @@
     <div class="container-fluid d-flex flex-row mt-4 pl-5 pr-5">           
         <table class="table bg-light w-25 rounded">
             <tbody>
-            <% if(!profile) { %>                
-                <% } else { 
+            <% if(!profile); 
+                else { 
                     if(profile.edu.length === 0) { %>
                         <tr>                                                                               
                             <th scope="row">
@@ -23,25 +23,21 @@
                             <td class="text-center">                                             
                                 <a href="/profile/management/edu" class="btn btn-info">Add education</a>
                             </td>
-                        </tr>                                            
-                    <% }
-                    const eduYears = Array.from(profile.edu.map(edu => parseInt(edu.to.slice(0, 4))));                
-                    const latestEduProfile = eduYears.sort((a, b) => b-a).shift();    
-                    const yearIndex = profile.edu.find(edu => parseInt(edu.to.slice(0, 4)) === latestEduProfile);
-                    console.log(yearIndex);
-                    profile.edu.forEach(edu => { %>
+                        </tr>
+                    <% } else {
+                        const renderData = profile.edu[0]; %>                                        
                         <tr>                                                
                             <td colspan="2">                                
-                                <span class="bg-success text-white p-1 rounded"><%=edu.from%></span> - <span class="bg-success text-white p-1 rounded"><%=edu.to%></span>
+                                <span class="bg-success text-white p-1 rounded"><%=renderData.from%></span> - <span class="bg-success text-white p-1 rounded"><%=renderData.to%></span>
                                 <div class="float-right dropdown">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Action
                                     </button>
                                     <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton">
                                         <a href="/profile/management/edu" class="btn btn-info w-100">New</a>                                        
-                                        <a href="/profile/management/<%=user._id%>/edu/<%=edu._id%>" class="btn btn-warning w-100">Edit</a>                                                                                
-                                        <form action="/profile/management/<%=user._id%>/edu/<%=edu._id%>?req-method=delete" method="POST" class="w-100">
-                                            <input type="text" name="id" hidden value="<%=edu._id%>">
+                                        <a href="/profile/management/<%=user._id%>/edu/<%=renderData._id%>" class="btn btn-warning w-100">Edit</a>                                                                                
+                                        <form action="/profile/management/<%=user._id%>/edu/<%=renderData._id%>?req-method=delete" method="POST" class="w-100">
+                                            <input type="text" name="id" hidden value="<%=renderData._id%>">
                                             <button class="btn btn-danger w-100">Delete</button>
                                         </form>                            
                                     </div>
@@ -50,20 +46,20 @@
                         </tr>
                         <tr>
                             <th style="font-style: italic">School:</th>                            
-                            <td><%=edu.school%></td>                                                        
+                            <td><%=renderData.school%></td>                                                        
                         </tr>
                         <tr>
                             <th style="font-style: italic">Major:</th>                            
-                            <td><%=edu.major%></td>                                                        
+                            <td><%=renderData.major%></td>                                                        
                         </tr>
                         <tr>
                             <th style="font-style: italic">Rewards:</th>                            
-                            <td><%=edu.rewards%></td>                                                        
-                        </tr>
-                    <% })                 
+                            <td><%=renderData.rewards%></td>                                                        
+                        </tr>                               
+                    <% }
                 } %>
             </tbody>
-        </table> 
+        </table>                         
         <table class="table w-50 mx-auto bg-light rounded">
             <tbody>
                 <% if(!profile) { %>
@@ -169,7 +165,7 @@
                 </tr>            
                 <% } %>                 
             </tbody>
-        </table>                
+        </table>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

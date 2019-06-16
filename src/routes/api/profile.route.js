@@ -80,8 +80,8 @@ router.get('/management/edu', (req, res) => {
     res.render('pages/profile-edu', { payload, cookie: true });
 })
 
-// route    GET /profile/mangement/edu
-// desc     get the users education profile view
+// route    POST /profile/mangement/edu
+// desc     save new edu profile
 // access   private
 router.post('/management/edu', (req, res) => {
     const newEduProfile = {
@@ -101,10 +101,11 @@ router.post('/management/edu', (req, res) => {
 
             profile.edu.unshift(newEduProfile);
 
+            profile.edu.sort((a, b) => parseInt(b.to.slice(0, 4)) - parseInt(a.to.slice(0, 4)));                                                
+            
             profile
                 .save()
                 .then(updatedEdu => {
-                    console.log(updatedEdu);
                     res.redirect('/users/profile');
                 })
                 .catch(err => console.log('Error updating education profile'));
@@ -122,7 +123,7 @@ router.get('/management/:userid/edu/:id', (req, res) => {
     User.findById(userid)
         .then(user => {
             Profile.findOne({handle: user.accountname})    
-                .then(profile => {                    
+                .then(profile => {
                     const matchedEdu = Array.from(profile.edu.filter(edu => {                        
                         return edu._id.toString() === id;                        
                     })).shift()
@@ -136,10 +137,7 @@ router.get('/management/:userid/edu/:id', (req, res) => {
 // desc     modify education profile
 // access   private
 router.post('/management/:userid/edu/:id', (req, res) => {
-    const payload = req.cookies.payload || null;    
-
-    const { userid, id } = req.params;  
-    console.log(req.query['req-method']);  
+    const { userid, id } = req.params;      
         
     User.findById(userid)
         .then(user => {
@@ -158,6 +156,7 @@ router.post('/management/:userid/edu/:id', (req, res) => {
                             }
                         }                                                    
                     })
+                    // save modified or deleted profile
                     profile
                         .save()                    
                         .then(newprofile => {
