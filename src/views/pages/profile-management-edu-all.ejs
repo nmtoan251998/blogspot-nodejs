@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/userprofile.css" >
+    <title>Education Profile</title>
+</head>
+<body>
+    <%-include('../layouts/header.ejs')%>
+    <div class="container-fluid d-flex flex-column mt-4">
+        <% profiles.edu.forEach(edu => { %>
+            <div class="card mx-auto mb-3 w-50 rounded">
+                <div class="card-header bg-light">
+                    <span><%= edu.from %></span>
+                    -
+                    <span><%= edu.to %></span>
+                </div>                 
+                <div class="card-body">                       
+                    <p>
+                        <span style="font-weight: bold;">School: &emsp;&emsp;&ensp;</span>
+                        <span><%=edu.school%></span>
+                    </p>
+                    <p>
+                        <span style="font-weight: bold;">Major:&emsp;&emsp;&emsp;&ensp;</span>
+                        <span><%=edu.major%></span>
+                    </p>
+                    <p>
+                        <span style="font-weight: bold;">Rewards:&emsp;&emsp;</span>
+                        <span><%=edu.rewards%></span>
+                    </p>                    
+                    <div class="float-right d-flex flex-row">                            
+                        <a href="/profile/management/edu" class="btn btn-info mr-1">New</a>                                        
+                        <a href="/profile/management/<%=user._id%>/edu/<%=edu._id%>" class="btn btn-warning mr-1">Edit</a>
+                        <form action="/profile/management/<%=user._id%>/edu/<%=edu._id%>?req-method=delete" method="POST">
+                            <input type="text" name="id" hidden value="<%=edu._id%>">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>         
+                </div>
+            </div>
+        <% }) %>        
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

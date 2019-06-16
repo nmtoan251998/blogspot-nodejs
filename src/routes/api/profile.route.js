@@ -12,7 +12,7 @@ router.get('', (req, res) => {
     res.render('pages/profile.create.ejs', { payload, cookie: true });
 })
 
-// route    POST /users/profile
+// route    POST /profile
 // desc     create user profile
 // access   private
 router.post('', (req, res) => {
@@ -37,8 +37,7 @@ router.post('', (req, res) => {
                             }
                         })
 
-                        return newProfile
-                            .save()
+                        return newProfile.save()
                             .then(newprofile => {
                                 res.redirect('/users/profile');
                             })
@@ -58,8 +57,7 @@ router.post('', (req, res) => {
                         linkedin: req.body.linkedin.trim()
                     }
                                         
-                    profile
-                        .save()
+                    profile.save()
                         .then(newprofile => {                            
                             res.redirect('/users/profile');
                         })
@@ -71,12 +69,31 @@ router.post('', (req, res) => {
         .catch(err => console.log(err));
 })
 
+// route    GET /profile/mangement/edu/all
+// desc     get all users edu profile
+// access   private
+router.get('/management/edu/all', (req, res) => {
+    const payload = req.cookies.payload || null;
+
+    User.findOne({accountname: payload.accountname})
+        .then(user => {
+            Profile.findOne({ handle: payload.accountname })
+                .then(profiles => {
+                    res.render('pages/profile-management-edu-all.ejs', { cookie: true, payload, user, profiles });
+                })
+                .catch(err => console.log('No profile found'));
+                                    
+        })
+    
+    
+})
+
 // route    GET /profile/mangement/edu
-// desc     get the users education profile view
+// desc     get the users education profile create view
 // access   private
 router.get('/management/edu', (req, res) => {
     const payload = req.cookies.payload || null;
-    
+
     res.render('pages/profile-management-edu.create.ejs', { payload, cookie: true });
 })
 
@@ -103,8 +120,7 @@ router.post('/management/edu', (req, res) => {
 
             profile.edu.sort((a, b) => parseInt(b.to.slice(0, 4)) - parseInt(a.to.slice(0, 4)));                                                
             
-            profile
-                .save()
+            profile.save()
                 .then(updatedEdu => {
                     res.redirect('/users/profile');
                 })
@@ -157,8 +173,7 @@ router.post('/management/:userid/edu/:id', (req, res) => {
                         }                                                    
                     })
                     // save modified or deleted profile
-                    profile
-                        .save()                    
+                    profile.save()                    
                         .then(newprofile => {
                             res.redirect('/users/profile');
                         })

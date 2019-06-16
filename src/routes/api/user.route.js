@@ -36,7 +36,7 @@ router.get('/profile', (req, res) => {
                     res.render('pages/user-profile.index.ejs', { cookie: true, payload, user, profile });
                 })
                 .catch(err => console.log(err));
-        })        
+        })
 })
 
 module.exports = router;
