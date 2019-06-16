@@ -128,7 +128,7 @@ router.get('/management/:userid/edu/:id', (req, res) => {
                         return edu._id.toString() === id;                        
                     })).shift()
 
-                    res.render('pages/profile-edu.interaction.ejs', { payload, cookie: true, edu: matchedEdu, userid });
+                    res.render('pages/profile-edu.modify.ejs', { payload, cookie: true, edu: matchedEdu, userid });
                 })
         })            
 })
