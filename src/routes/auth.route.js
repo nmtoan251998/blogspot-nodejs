@@ -83,14 +83,14 @@ router.post('/login', (req, res) => {
     User.findOne({ accountname: accountname.trim() })
         .then(user => {
             if(!user) {
-                error.userNotFound = 'Wrong accountname or password';
+                error.wrongIdOrPassword = 'Wrong accountname or password';
                 return res.render('auth/login', { error, cookie: false });
             }
 
             // compare the password of matched account infor in the database
             bcrypt.compare(password, user.password, (err, result) => {
                 if(result === false) {
-                    error.userNotFound = 'Wrong accountname or password';                    
+                    error.wrongIdOrPassword = 'Wrong accountname or password';                    
                 }
 
                 if(error) {
@@ -100,11 +100,8 @@ router.post('/login', (req, res) => {
                 const payload = {
                     _id: user._id,
                     accountname: accountname
-                }
-
-                if(result === true) {
-                    res.cookie('payload', payload, { expire: 360000 + Date.now() }).redirect('/users');
-                }
+                }                
+                res.cookie('payload', payload, { expire: 360000 + Date.now() }).redirect('/users');                
             })
 
         })
