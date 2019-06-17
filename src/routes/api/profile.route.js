@@ -2,7 +2,9 @@ const router = require('express').Router();
 
 const User = require('../../models/users');
 const Profile = require('../../models/profile');
-const { validateBasicProfileInput } = require('../../validation/profile.validate');
+const { 
+    validateBasicProfileInput,
+    validateEduProfileInput } = require('../../validation/profile.validate');
 
 // route    GET /users/profile
 // desc     get the users profile view
@@ -107,6 +109,9 @@ router.get('/management/edu', (req, res) => {
 // desc     save new edu profile
 // access   private
 router.post('/management/edu', (req, res) => {
+    const error = validateEduProfileInput(req.body);
+    const payload = req.cookies.payload;
+
     const newEduProfile = {
         major: req.body.major.trim(),
         school: req.body.school.trim(),
@@ -118,17 +123,19 @@ router.post('/management/edu', (req, res) => {
     Profile.findOne({handle: req.cookies.payload.accountname})
         .then(profile => {
             if(!profile) {
-                console.log('Profile not found');
-                return res.redirect('/users/profile');
+                error.profileNotFound = 'Profile not found';                
+            }
+
+            if(Object.keys(error).length > 0) {
+                return res.render('pages/profile-management-edu.create.ejs', { error, payload, cookie: true });
             }
 
             profile.edu.unshift(newEduProfile);
-
             profile.edu.sort((a, b) => parseInt(b.to.slice(0, 4)) - parseInt(a.to.slice(0, 4)));                                                
             
             profile.save()
                 .then(updatedEdu => {
-                    res.redirect('/users/profile');
+                    res.redirect('/profile/management/edu/all');
                 })
                 .catch(err => console.log('Error updating education profile'));
         })
@@ -155,7 +162,7 @@ router.get('/management/:userid/edu/:id', (req, res) => {
         })            
 })
 
-// route    PUT /profile/mangement/:userid/edu/:id
+// route    POST /profile/mangement/:userid/edu/:id
 // desc     modify education profile
 // access   private
 router.post('/management/:userid/edu/:id', (req, res) => {
@@ -181,7 +188,7 @@ router.post('/management/:userid/edu/:id', (req, res) => {
                     // save modified or deleted profile
                     profile.save()                    
                         .then(newprofile => {
-                            res.redirect('/users/profile');
+                            res.redirect('/profile/management/edu/all');
                         })
                         .catch(err => console.log('Error action data profile'));
                     

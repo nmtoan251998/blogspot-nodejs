@@ -36,3 +36,17 @@ module.exports.validateBasicProfileInput = (data) => {
     
     return error;
 }
+
+module.exports.validateEduProfileInput = (data) => {
+    let error = {};            
+    // ======= Check null or empty ======= \\
+    if(validator.isEmpty(data.major.trim())) {        
+        error.emptyMajor = 'Major cannot be empty'; 
+    }
+
+    if(validator.isEmpty(data.school.trim())) {        
+        error.emptySchool = 'School cannot be empty'; 
+    }
+    
+    return error;
+}
