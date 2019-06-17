@@ -48,9 +48,9 @@ router.post('/register', (req, res) => {
                     return res.render('auth/register.ejs', { error, cookie: false });
                 }
                 
-                // newUser.save()
-                //     .then(user => console.log('New user: ' +user +' action = redirect'))
-                //     .catch(err => res.status(400).json({ error: err }));
+                newUser.save()
+                    .then(user => console.log('New user: ' +user +' action = redirect'))
+                    .catch(err => res.status(400).json({ error: err }));
                     
                 return res.redirect('/auth/login');                                
             })
@@ -77,19 +77,24 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res) => {
     const { accountname, password } = req.body;
 
+    const error = {};
+
     // find account infor from the database
     User.findOne({ accountname: accountname.trim() })
         .then(user => {
             if(!user) {
-                // TODO: render error label
-                return res.redirect('/auth/login');
+                error.userNotFound = 'Wrong accountname or password';
+                return res.render('auth/login', { error, cookie: false });
             }
 
             // compare the password of matched account infor in the database
             bcrypt.compare(password, user.password, (err, result) => {
                 if(result === false) {
-                    // TODO: render error label
-                    return res.status(404).json({ msg: 'Wrong Id or password', error: err });
+                    error.userNotFound = 'Wrong accountname or password';                    
+                }
+
+                if(error) {
+                    return res.render('/auth/login', { error, cookie: false });
                 }
 
                 const payload = {

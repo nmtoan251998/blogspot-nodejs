@@ -8,8 +8,17 @@
     <title>User login</title>
 </head>
 <body>
-    <%-include('../layouts/header.ejs')%>
+    <%-include('../layouts/header.ejs')%>    
     <div class="container-fluid">
+        <% try {
+            if(error) { %>
+            <div class="error-container mt-2">
+            <% for(each in error) { %>
+                <div class="alert alert-danger my-1 w-25 mx-auto text-center"><%=error[each]%></div>    
+            <% } %>
+            </div>
+        <% } 
+        } catch(err) {}; %>
         <form action="/auth/login" method="POST" class="form-group w-75 mx-auto mt-5 rounded bg-light p-2 clearfix">
             <label for="accountname">Account ID: </label>
             <input id="accountname" class="form-control" type="text" name="accountname">
