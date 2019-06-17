@@ -8,9 +8,18 @@
     <title>Create new account</title>
 </head>
 <body>
-    <%-include('../layouts/header.ejs')%>
-    <div class="container-fluid">
-        <form action="/auth/register" method="POST" class="form-group w-75 mx-auto mt-5 rounded bg-light p-2 clearfix">
+    <%-include('../layouts/header.ejs')%>    
+    <div class="container-fluid">        
+        <% try {
+            if(error) { %>
+            <div class="error-container mt-2">
+            <% for(each in error) { %>
+                <div class="alert alert-danger my-1 w-25 mx-auto text-center"><%=error[each]%></div>    
+            <% } %>
+            </div>
+        <% } 
+        } catch(err) {}; %>                
+        <form action="/auth/register" method="POST" class="form-group w-75 mx-auto mt-3 rounded bg-light p-2 clearfix">
             <label for="accountname">Account ID: </label>
             <input id="accountname" class="form-control" type="text" name="accountname">
 
@@ -20,10 +29,10 @@
             <label for="password2">Re-enter password: </label>
             <input id="password2" class="form-control" type="text" name="password2">
 
-            <div class="float-right mt-4">
-                <button class="btn btn-primary">Create</button>
-                <button class="btn btn-primary">Back</button>
-            </div>
+            <div class="mt-2">
+                <a href="/auth/login" class="nav-link float-left">Already have an account? Go login.</a>
+                <button class="btn btn-primary float-right">Create account</button>            
+            </div>            
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

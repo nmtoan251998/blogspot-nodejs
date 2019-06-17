@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 
 const User = require('../models/users');
+const { validateRegisterInput } = require('../validation/auth.validate');
 
 // route    GET /auth/register
 // desc     view to input new account
@@ -22,12 +23,13 @@ router.get('/register',(req, res) => {
 router.post('/register', (req, res) => {
     const { accountname, password, password2 } = req.body;
 
+    const error = validateRegisterInput(req.body);    
+
     // compare 2 password fields
     if(password.trim() !== password2.trim()) {
-        res.status(400).json({ msg: 'Passwords must match' });
-        return res.redirect('/auth/register');
+        error.passwordConfirm = 'Passwors must match';        
     }
-
+    
     // hash password before saving it to the database
     bcrypt.hash(password, 10, (err, hash) => {
         const newUser = new User({
@@ -39,17 +41,21 @@ router.post('/register', (req, res) => {
         User.findOne({ accountname: newUser.accountname})
             .then(user => {
                 if(user) {
-                    return res.redirect('/auth/login');
+                    error.userExist = 'User already exist';
                 };
 
-                newUser.save()
-                    .then(user => console.log('New user: ' +user +' action = redirect'))
-                    .catch(err => res.status(400).json({ error: err }));
+                if(error) {                    
+                    return res.render('auth/register.ejs', { error, cookie: false });
+                }
+                
+                // newUser.save()
+                //     .then(user => console.log('New user: ' +user +' action = redirect'))
+                //     .catch(err => res.status(400).json({ error: err }));
                     
-                return res.redirect('/auth/login');
+                return res.redirect('/auth/login');                                
             })
             .catch(err => console.log(err));
-    });
+    });    
 })
 
 // route    GET /auth/login
@@ -87,7 +93,7 @@ router.post('/login', (req, res) => {
                 }
 
                 const payload = {
-                    _id: user._id,                    
+                    _id: user._id,
                     accountname: accountname
                 }
 
@@ -102,7 +108,7 @@ router.post('/login', (req, res) => {
 // route    GET /auth/logout
 // desc     logout the user / clear the cookies
 // access   private
-router.get('/logout', (req, res) => {    
+router.get('/logout', (req, res) => {
     res.clearCookie('payload').redirect('/auth/login');
 })
 
