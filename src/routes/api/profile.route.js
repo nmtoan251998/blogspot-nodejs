@@ -166,12 +166,20 @@ router.get('/management/:userid/edu/:id', (req, res) => {
 // desc     modify education profile
 // access   private
 router.post('/management/:userid/edu/:id', (req, res) => {
-    const { userid, id } = req.params;      
-        
+    const { userid, id } = req.params;     
+    const payload = req.cookies.payload;     
+    const error = validateEduProfileInput(req.body);    
+            
     User.findById(userid)
-        .then(user => {
+        .then(user => {            
             Profile.findOne({handle: user.accountname})    
-                .then(profile => {                                        
+                .then(profile => {                                                                
+                    if(Object.keys(error).length > 0) {
+                        const matchedEdu = Array.from(profile.edu.filter(edu => {                        
+                            return edu._id.toString() === id;                        
+                        })).shift()
+                        return res.render('pages/profile-management-edu.modify.ejs', { error, payload, cookie: true, userid, edu: matchedEdu });
+                    }
                     profile.edu.forEach((edu, index) => {                
                         if(id === edu._id.toString()) {
                             if(req.query['req-method'] === 'delete') {
@@ -184,7 +192,8 @@ router.post('/management/:userid/edu/:id', (req, res) => {
                                 profile.edu[index].rewards = req.body.rewards.toString().trim();                                
                             }
                         }                                                    
-                    })
+                    })                    
+
                     // save modified or deleted profile
                     profile.save()                    
                         .then(newprofile => {
@@ -194,6 +203,104 @@ router.post('/management/:userid/edu/:id', (req, res) => {
                     
                 })
         })            
+})
+
+// route    GET /profile/mangement/exp
+// desc     get the users experience profile create view
+// access   private
+router.get('/management/exp', (req, res) => {
+    const payload = req.cookies.payload || null;
+
+    res.render('pages/profile-management-exp.create.ejs', { payload, cookie: true });
+})
+
+// route    POST /profile/mangement/exp
+// desc     save new exp profile
+// access   private
+router.post('/management/exp', (req, res) => {
+    const error = validateEduProfileInput(req.body);
+    const payload = req.cookies.payload;
+
+    const newExpProfile = {
+        title: req.body.title.trim(),
+        company: req.body.company.trim(),
+        location: req.body.location.trim(),
+        from: req.body.from.trim(),
+        to: req.body.to.trim(),
+    };        
+
+    Profile.findOne({handle: req.cookies.payload.accountname})
+        .then(profile => {
+            if(!profile) {
+                error.profileNotFound = 'Profile not found';                
+            }
+
+            if(Object.keys(error).length > 0) {
+                return res.render('pages/profile-management-edu.create.ejs', { error, payload, cookie: true });
+            }
+
+            profile.exp.unshift(newExpProfile);
+            profile.exp.sort((a, b) => parseInt(b.to.slice(0, 4)) - parseInt(a.to.slice(0, 4)));                                                
+            
+            profile.save()
+                .then(updatedExp => {
+                    res.redirect('/profile/management/exp/all');
+                })
+                .catch(err => console.log('Error updating experience profile'));
+        })
+})
+
+// route    POST /profile/mangement/:userid/exp/:id
+// desc     modify experience profile
+// access   private
+router.post('/management/:userid/exp/:id', (req, res) => {
+    const { userid, id } = req.params;      
+        
+    User.findById(userid)
+        .then(user => {
+            Profile.findOne({handle: user.accountname})    
+                .then(profile => {                                        
+                    profile.exp.forEach((exp, index) => {                
+                        if(id === exp._id.toString()) {
+                            if(req.query['req-method'] === 'delete') {
+                                profile.exp.splice(index, 1);
+                            } else if(req.query['req-method'] === 'modify') {                                                                
+                                profile.exp[index].title = req.body.title.toString().trim();
+                                profile.exp[index].company = req.body.company.toString().trim();
+                                profile.exp[index].location = req.body.location.toString().trim();                                
+                                profile.exp[index].from = req.body.from.toString().trim();
+                                profile.exp[index].to = req.body.to.toString().trim();
+                            }
+                        }                                                    
+                    })
+                    // save modified or deleted profile
+                    profile.save()                    
+                        .then(newprofile => {
+                            res.redirect('/profile/management/exp/all');
+                        })
+                        .catch(err => console.log('Error action data profile'));
+                    
+                })
+        })            
+})
+
+// route    GET /profile/mangement/exp/all
+// desc     get all users exp profile
+// access   private
+router.get('/management/exp/all', (req, res) => {
+    const payload = req.cookies.payload || null;
+
+    User.findOne({accountname: payload.accountname})
+        .then(user => {
+            Profile.findOne({ handle: payload.accountname })
+                .then(profiles => {
+                    res.render('pages/profile-management-exp-all.ejs', { cookie: true, payload, user, profiles });
+                })
+                .catch(err => console.log('No profile found'));
+                                    
+        })
+    
+    
 })
 
 module.exports = router;
