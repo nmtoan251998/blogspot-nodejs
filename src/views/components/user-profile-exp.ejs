@@ -2,17 +2,17 @@
     <tbody>
     <% if(!profile); 
         else { 
-            if(profile.edu.length === 0) { %>
+            if(profile.exp.length === 0) { %>
                 <tr>                                                                               
                     <th scope="row">
-                        <p>No education data, add new one? </p>
+                        <p>No expcation data, add new one? </p>
                     </th>   
                     <td class="text-center">                                             
-                        <a href="/profile/management/edu" class="btn btn-info">Add education</a>
+                        <a href="/profile/management/exp" class="btn btn-info">Add experience</a>
                     </td>
                 </tr>
             <% } else {
-                const renderData = profile.edu[0]; %>                                        
+                const renderData = profile.exp[0]; %>                                        
                 <tr>                                                
                     <td colspan="2">                                
                         <span class="bg-success text-white p-1 rounded"><%=renderData.from%></span> 
@@ -21,22 +21,22 @@
                     </td>
                 </tr>
                 <tr>
-                    <th style="font-style: italic">School:</th>                            
-                    <td><%=renderData.school%></td>                                                        
+                    <th style="font-style: italic">Job title:</th>                            
+                    <td><%=renderData.title%></td>                                                        
                 </tr>
                 <tr>
-                    <th style="font-style: italic">Major:</th>                            
-                    <td><%=renderData.major%></td>                                                        
+                    <th style="font-style: italic">Company:</th>                            
+                    <td><%=renderData.company%></td>                                                        
                 </tr>
                 <tr>
-                    <th style="font-style: italic">Rewards:</th>                            
-                    <td><%=renderData.rewards%></td>                                                        
+                    <th style="font-style: italic">Location:</th>                            
+                    <td><%=renderData.location%></td>                                                        
                 </tr>
                 <tr>             
                     <th></th>                                   
                     <td>                        
                         <div class="float-right dropdown">                            
-                            <a href="/profile/management/edu/all" class="btn btn-info w-100">Manage</a>
+                            <a href="/profile/management/exp/all" class="btn btn-info w-100">Manage</a>
                         </div>                                
                     </td>
                 </tr>

@@ -10,8 +10,11 @@
 </head>
 <body>
     <%-include('../layouts/header.ejs')%>    
-    <div class="container-fluid d-flex flex-row mt-4 pl-5 pr-5">                   
-        <%-include('../components/user-profile-edu.ejs')%>        
+    <div class="container-fluid d-flex flex-row mt-4 pl-5 pr-5">    
+        <div class="d-flex flex-column w-25">
+            <%-include('../components/user-profile-edu.ejs')%>        
+            <%-include('../components/user-profile-exp.ejs')%>        
+        </div>                       
         <%-include('../components/user-profile-table.ejs')%>        
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

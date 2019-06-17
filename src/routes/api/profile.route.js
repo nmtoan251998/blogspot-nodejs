@@ -4,7 +4,8 @@ const User = require('../../models/users');
 const Profile = require('../../models/profile');
 const { 
     validateBasicProfileInput,
-    validateEduProfileInput } = require('../../validation/profile.validate');
+    validateEduProfileInput,
+    validateExpProfileInput } = require('../../validation/profile.validate');
 
 // route    GET /users/profile
 // desc     get the users profile view
@@ -167,7 +168,7 @@ router.get('/management/:userid/edu/:id', (req, res) => {
 // access   private
 router.post('/management/:userid/edu/:id', (req, res) => {
     const { userid, id } = req.params;     
-    const payload = req.cookies.payload;     
+    const payload = req.cookies.payload;
     const error = validateEduProfileInput(req.body);    
             
     User.findById(userid)
@@ -218,7 +219,7 @@ router.get('/management/exp', (req, res) => {
 // desc     save new exp profile
 // access   private
 router.post('/management/exp', (req, res) => {
-    const error = validateEduProfileInput(req.body);
+    const error = validateExpProfileInput(req.body);
     const payload = req.cookies.payload;
 
     const newExpProfile = {
@@ -250,18 +251,47 @@ router.post('/management/exp', (req, res) => {
         })
 })
 
-// route    POST /profile/mangement/:userid/exp/:id
-// desc     modify experience profile
+// route    GET /profile/mangement/:userid/exp/:id
+// desc     get the users experience profile view to modify
 // access   private
-router.post('/management/:userid/exp/:id', (req, res) => {
-    const { userid, id } = req.params;      
+router.get('/management/:userid/exp/:id', (req, res) => {
+    const payload = req.cookies.payload || null;    
+
+    const { userid, id } = req.params;
         
     User.findById(userid)
         .then(user => {
             Profile.findOne({handle: user.accountname})    
-                .then(profile => {                                        
+                .then(profile => {
+                    const matchedExp = Array.from(profile.exp.filter(exp => {                        
+                        return exp._id.toString() === id;                        
+                    })).shift()
+
+                    res.render('pages/profile-management-exp.modify.ejs', { payload, cookie: true, exp: matchedExp, userid });
+                })
+        })            
+})
+
+// route    POST /profile/mangement/:userid/exp/:id
+// desc     modify experience profile
+// access   private
+router.post('/management/:userid/exp/:id', (req, res) => {    
+    const { userid, id } = req.params;     
+    const payload = req.cookies.payload;
+    const error = validateExpProfileInput(req.body);
+        
+    User.findById(userid)
+        .then(user => {
+            Profile.findOne({handle: user.accountname})    
+                .then(profile => {                      
+                    if(Object.keys(error).length > 0) {
+                        const matchedExp = Array.from(profile.exp.filter(exp => {                        
+                            return exp._id.toString() === id;                        
+                        })).shift()
+                        return res.render('pages/profile-management-exp.modify.ejs', { error, payload, cookie: true, userid, edu: matchedExp });
+                    }
                     profile.exp.forEach((exp, index) => {                
-                        if(id === exp._id.toString()) {
+                        if(id === exp._id.toString()) {                            
                             if(req.query['req-method'] === 'delete') {
                                 profile.exp.splice(index, 1);
                             } else if(req.query['req-method'] === 'modify') {                                                                

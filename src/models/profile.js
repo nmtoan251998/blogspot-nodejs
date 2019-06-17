@@ -61,8 +61,26 @@ const profileSchema = mongoose.Schema({
         to: {
             type: String            
         }
-    }        
-    ],
+    }],
+    exp: [{
+        title: {
+            type: String,
+            require: true
+        },        
+        company: {
+            type: String,
+            require: true
+        },     
+        location: {
+            type: String
+        },
+        from: {
+            type: String
+        },
+        to: {
+            type: String            
+        }
+    }]
 });
 
 module.exports = mongoose.model('profile', profileSchema);

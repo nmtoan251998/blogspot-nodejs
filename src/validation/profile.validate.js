@@ -50,3 +50,19 @@ module.exports.validateEduProfileInput = (data) => {
     
     return error;
 }
+
+module.exports.validateExpProfileInput = (data) => {
+    let error = {};            
+
+    console.log(data)
+    // ======= Check null or empty ======= \\
+    if(validator.isEmpty(data.title.trim())) {        
+        error.emptyTitle = 'Title cannot be empty'; 
+    }
+
+    if(validator.isEmpty(data.company.trim())) {        
+        error.emptyCompany = 'Company cannot be empty'; 
+    }
+    
+    return error;
+}
