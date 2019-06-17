@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const User = require('../../models/users');
 const Profile = require('../../models/profile');
+const { validateBasicProfileInput } = require('../../validation/profile.validate');
 
 // route    GET /users/profile
 // desc     get the users profile view
@@ -15,56 +16,61 @@ router.get('', (req, res) => {
 // route    POST /profile
 // desc     create user profile
 // access   private
-router.post('', (req, res) => {
+router.post('', (req, res) => {    
+    const error = validateBasicProfileInput(req.body);
+    const payload = req.cookies.payload;    
+
     User.findOne({_id: req.body._id.trim()})     
         .populate('user')        
         .then(user => {
+            if(Object.keys(error).length > 0) {
+                return res.render('pages/profile.create.ejs', { error, payload, cookie: true });
+            }
+
             Profile.findOne({handle: req.body.handle.trim()})
                 .then(profile => {
-                    if(!profile) {
-                        const newProfile = new Profile({
-                            handle: req.body.handle.trim(),
-                            firstname: req.body.firstname.trim(),
-                            lastname: req.body.lastname.trim(),
-                            email: req.body.email.trim(),
-                            age: parseInt(req.body.age.trim()),
-                            phone: req.body.phone.trim(),
-                            address: req.body.address.trim(),                    
-                            social: {
-                                facebook: req.body.facebook.trim(),
-                                github: req.body.github.trim(),
-                                linkedin: req.body.linkedin.trim()
-                            }
-                        })
-
-                        return newProfile.save()
-                            .then(newprofile => {
+                    if(profile) {
+                        profile.firstname = req.body.firstname.trim();
+                        profile.lastname = req.body.lastname.trim();
+                        profile.email = req.body.email.trim();
+                        profile.age = parseInt(req.body.age.trim());
+                        profile.phone = req.body.phone.trim();
+                        profile.address = req.body.address.trim();                    
+                        profile.social = {
+                            facebook: req.body.facebook.trim(),
+                            github: req.body.github.trim(),
+                            linkedin: req.body.linkedin.trim()
+                        }                    
+                                            
+                        return profile.save()
+                            .then(newprofile => {                            
                                 res.redirect('/users/profile');
                             })
-                            .catch(err => console.log('Error creating new profile'));
-                        
-                    }
-
-                    profile.firstname = req.body.firstname.trim();
-                    profile.lastname = req.body.lastname.trim();
-                    profile.email = req.body.email.trim();
-                    profile.age = parseInt(req.body.age.trim());
-                    profile.phone = req.body.phone.trim();
-                    profile.address = req.body.address.trim();                    
-                    profile.social = {
-                        facebook: req.body.facebook.trim(),
-                        github: req.body.github.trim(),
-                        linkedin: req.body.linkedin.trim()
-                    }
-                                        
-                    profile.save()
-                        .then(newprofile => {                            
-                            res.redirect('/users/profile');
-                        })
-                        .catch(err => console.log('Error updating profile'));
-                    
+                            .catch(err => console.log('Error updating profile'));   
+                    }                                        
                 })
                 .catch(err => console.log(err));
+
+            const newProfile = new Profile({
+                handle: req.body.handle.trim(),
+                firstname: req.body.firstname.trim(),
+                lastname: req.body.lastname.trim(),
+                email: req.body.email.trim(),
+                age: parseInt(req.body.age.trim()),
+                phone: req.body.phone.trim(),
+                address: req.body.address.trim(),                    
+                social: {
+                    facebook: req.body.facebook.trim(),
+                    github: req.body.github.trim(),
+                    linkedin: req.body.linkedin.trim()
+                }
+            })
+
+            newProfile.save()
+                .then(newprofile => {
+                    res.redirect('/users/profile');
+                })
+                .catch(err => console.log('Error creating new profile'));            
         })
         .catch(err => console.log(err));
 })

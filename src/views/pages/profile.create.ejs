@@ -6,11 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/css/profile.css" >
-    <title>Edit <%=payload.accountname%> profile</title>
+    <% try { %>
+        <title>Edit <%=payload.accountname%> profile</title>
+    <% } catch(err) {};%>
+    
 </head>
 <body>
-    <%-include('../layouts/header.ejs')%>
+    <%- include('../layouts/header.ejs') %>
     <div class="container-fluid mt-2">
+        <% try {
+            if(error) { %>
+            <div class="error-container mt-2">
+            <% for(each in error) { %>
+                <div class="alert alert-danger my-1 w-25 mx-auto text-center"><%=error[each]%></div>    
+            <% } %>
+            </div>
+        <% } 
+        } catch(err) {}; %>
         <form action="/profile" method="POST" class="form-group w-75 mx-auto p-2 bg-light rounded clearfix">
             <label for="accountname">Account name:</label>
             <input id="accountname" class="form-control" type="text" name="accountname" disabled value=<%=payload.accountname%>>
