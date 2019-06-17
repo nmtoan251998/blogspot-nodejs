@@ -44,7 +44,7 @@ router.post('/register', (req, res) => {
                     error.userExist = 'User already exist';
                 };
 
-                if(error) {                    
+                if(Object.keys(error).length > 0) {
                     return res.render('auth/register.ejs', { error, cookie: false });
                 }
                 
@@ -93,8 +93,8 @@ router.post('/login', (req, res) => {
                     error.wrongIdOrPassword = 'Wrong accountname or password';                    
                 }
 
-                if(error) {
-                    return res.render('/auth/login', { error, cookie: false });
+                if(Object.keys(error).length > 0) {                    
+                    return res.render('auth/login', { error, cookie: false });
                 }
 
                 const payload = {
