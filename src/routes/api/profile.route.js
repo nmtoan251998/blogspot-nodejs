@@ -276,25 +276,27 @@ router.get('/management/:userid/exp/:id', (req, res) => {
 // desc     modify experience profile
 // access   private
 router.post('/management/:userid/exp/:id', (req, res) => {    
-    const { userid, id } = req.params;     
-    const payload = req.cookies.payload;
-    const error = validateExpProfileInput(req.body);
+    const { userid, id } = req.params;         
         
     User.findById(userid)
         .then(user => {
             Profile.findOne({handle: user.accountname})    
-                .then(profile => {                      
-                    if(Object.keys(error).length > 0) {
-                        const matchedExp = Array.from(profile.exp.filter(exp => {                        
-                            return exp._id.toString() === id;                        
-                        })).shift()
-                        return res.render('pages/profile-management-exp.modify.ejs', { error, payload, cookie: true, userid, edu: matchedExp });
-                    }
+                .then(profile => {                                          
                     profile.exp.forEach((exp, index) => {                
                         if(id === exp._id.toString()) {                            
                             if(req.query['req-method'] === 'delete') {
                                 profile.exp.splice(index, 1);
-                            } else if(req.query['req-method'] === 'modify') {                                                                
+                            } else if(req.query['req-method'] === 'modify') { 
+                                const payload = req.cookies.payload;
+                                const error = validateExpProfileInput(req.body);
+
+                                if(Object.keys(error).length > 0) {
+                                    const matchedExp = Array.from(profile.exp.filter(exp => {                        
+                                        return exp._id.toString() === id;                        
+                                    })).shift()
+                                    return res.render('pages/profile-management-exp.modify.ejs', { error, payload, cookie: true, userid, edu: matchedExp });
+                                }
+
                                 profile.exp[index].title = req.body.title.toString().trim();
                                 profile.exp[index].company = req.body.company.toString().trim();
                                 profile.exp[index].location = req.body.location.toString().trim();                                
