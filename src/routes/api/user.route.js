@@ -3,6 +3,7 @@ const router = require('express').Router();
 const User = require('../../models/users');
 const Profile = require('../../models/profile');
 
+
 // route    GET /users
 // desc     get the users index view
 // access   private
@@ -24,7 +25,7 @@ router.get('/profile', (req, res) => {
     
     if(!req.cookies.payload) {
         return res.redirect('/auth/login');
-    }    
+    }
     
     User.findOne({accountname: payload.accountname})
         .then(user => {

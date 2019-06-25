@@ -11,7 +11,7 @@ const {
 // desc     get the users profile view
 // access   private
 router.get('', (req, res) => {
-    const payload = req.cookies.payload || null;     
+    const payload = req.cookies.payload || null;
     
     res.render('pages/profile.create.ejs', { payload, cookie: true });
 })
@@ -333,6 +333,15 @@ router.get('/management/exp/all', (req, res) => {
         })
     
     
+})
+
+// route    GET /profile/mangement/skill
+// desc     get the users skill profile create view
+// access   private
+router.get('/management/skill', (req, res) => {
+    const payload = req.cookies.payload || null;
+
+    res.render('pages/profile-management-skill.create.ejs', { payload, cookie: true });
 })
 
 module.exports = router;

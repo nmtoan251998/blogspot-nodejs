@@ -25,7 +25,7 @@
             </th>   
             <td>                                             
                 <h3><%=profile.firstname%> <%=profile.lastname%></h3>
-                <p>Job position at Job location</p>
+                <p><%=profile.exp[0].title%> at <%=profile.exp[0].company%></p>
                 <div class="d-flex flex-row">
                     <a class="navbar-brand" href="<%=profile.social.facebook%>" target="_blank">
                         <img src="/img/facebook-brands.svg" alt="facebook" class="avatar-img" style="width: 30px;">
