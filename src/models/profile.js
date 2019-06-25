@@ -80,7 +80,14 @@ const profileSchema = mongoose.Schema({
         to: {
             type: String            
         }
-    }]
+    }],
+    skills: {
+        frontEnd: [String],
+        backEnd: [String],
+        softSkills: [String],
+        codeLangs: [String],
+        languages: [String]
+    }
 });
 
 module.exports = mongoose.model('profile', profileSchema);

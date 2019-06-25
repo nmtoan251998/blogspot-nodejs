@@ -344,4 +344,29 @@ router.get('/management/skill', (req, res) => {
     res.render('pages/profile-management-skill.create.ejs', { payload, cookie: true });
 })
 
+// route    POST /profile/mangement/skill
+// desc     save new skill profile
+// access   private
+router.post('/management/skill', (req, res) => {
+    // const error = validateExpProfileInput(req.body);
+    const payload = req.cookies.payload;
+    
+    const toolStack = req.body;    
+
+    Profile.findOne({handle: req.cookies.payload.accountname})
+        .then(profile => {
+            if(!profile) {
+                // error.profileNotFound = 'Profile not found';                
+            }             
+            
+            profile.skills = toolStack;
+            
+            profile.save()
+                .then(updatedSkill => {
+                    res.redirect('/profile/management/skill/all');
+                })
+                .catch(err => console.log('Error updating experience profile'));
+        })
+})
+
 module.exports = router;

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const pickedToolStack = e.target.value.toString().trim();
         let toolStackRenderer = '';
         toolStacks[pickedToolStack].forEach(htmlRendering => {
-            toolStackRenderer += `<div class="form-group form-check tool-stack col-2" id="tool-stack-${counter}">
+            toolStackRenderer += `<div class="form-group form-check tool-stack col-3" id="tool-stack-${counter}">
                                     <input type="checkbox" class="form-check-input" id="${htmlRendering}" name="${pickedToolStack}" value="${htmlRendering}">
                                     <label class="form-check-label" id="${htmlRendering}">${htmlRendering}</label>
                                 </div>`;
